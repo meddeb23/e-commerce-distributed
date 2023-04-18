@@ -9,7 +9,9 @@ const cartRepository = new CartRepository();
 const cartService: ICartService = new CartService(cartRepository);
 
 router.get("/", makeRegistrationController("getCart", cartService));
+
 router.delete("/", makeRegistrationController("emptyCart", cartService));
+
 router.delete(
   "/:cartItemId",
   makeRegistrationController("removeItemFromCart", cartService)

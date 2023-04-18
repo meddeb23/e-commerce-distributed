@@ -29,6 +29,7 @@ class CartService implements ICartService {
     };
     return makeHttpResponse(200, res);
   }
+
   async addItemToCart(req: httpRequest): Promise<httpResponse> {
     const { userId, quantity } = req.body;
     const { productId } = req.pathParams;
@@ -50,6 +51,7 @@ class CartService implements ICartService {
 
     return makeHttpResponse(200, addedItem);
   }
+
   async removeItemFromCart(req: httpRequest): Promise<httpResponse> {
     const { userId } = req.body;
     let { cartItemId } = req.pathParams;
@@ -71,11 +73,45 @@ class CartService implements ICartService {
 
     return makeHttpResponse(200, deleteItem);
   }
+
   async updateCartItemQuantity(req: httpRequest): Promise<httpResponse> {
-    return makeHttpResponse(200, { message: "not implimented" });
+    const { userId, quantity } = req.body;
+    const { cartItemId } = req.pathParams;
+    const { error } = ReqValidation.updateCartItemSchema.validate({
+      userId,
+      quantity,
+      cartItemId,
+    });
+
+    if (error) return makeHttpError(400, error.message);
+
+    const cart = await this.cartRepository.getCart(userId);
+
+    if (!cart) return makeHttpError(404, "cart does not exit");
+    if (!cart.hasItem(parseInt(cartItemId)))
+      return makeHttpError(404, "product does not exsit in user cart");
+
+    const updatedItem = await this.cartRepository.updatecartItem(
+      cartItemId,
+      quantity
+    );
+
+    return makeHttpResponse(200, updatedItem);
   }
+
   async emptyCart(req: httpRequest): Promise<httpResponse> {
-    return makeHttpResponse(200, { message: "not implimented" });
+    const { userId } = req.body;
+
+    const { error } = ReqValidation.idSchema.validate(userId);
+
+    if (error) return makeHttpError(400, error.message);
+    const cart = await this.cartRepository.getCart(userId);
+
+    if (!cart) return makeHttpError(404, "cart does not exist");
+
+    const emptyCart = await this.cartRepository.emptyCart(userId);
+
+    return makeHttpResponse(200, emptyCart);
   }
 }
 

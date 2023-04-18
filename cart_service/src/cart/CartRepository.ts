@@ -4,11 +4,13 @@ export default class CartRepository {
   cart: Cart = new Cart(5, 1, new Date(), new Date());
 
   async createCart(userId: number) {}
+
   async getCart(userId: number): Promise<Cart> {
     return this.cart;
   }
   async emptyCart(userId: number) {
-    return new Cart(5, 1, new Date(), new Date());
+    this.cart.items = [];
+    return this.cart;
   }
 
   async addItemToCart(
@@ -16,16 +18,31 @@ export default class CartRepository {
     productId: number,
     quantity: number
   ): Promise<CartItem> {
-    const newProduct = new Product(1, "Product Name", 10.99, 1);
-    const item = new CartItem(1, this.cart.id, newProduct, 5);
+    const newProduct = new Product(1, "Product Name", 10.99, 0);
+    const item = new CartItem(
+      this.cart.items.length,
+      this.cart.id,
+      newProduct,
+      quantity
+    );
     this.cart.addItem(item);
     return item;
   }
+
   async removeItemFromCart(cartItemId: number) {
     this.cart.removeItem(cartItemId);
     return this.cart;
   }
-  async updatecartItem(cartItemId: number, quantity: number) {}
+
+  async updatecartItem(
+    cartItemId: number,
+    quantity: number
+  ): Promise<CartItem> {
+    this.cart.items = this.cart.items.map((i) =>
+      i.id == cartItemId ? { ...i, quantity } : i
+    );
+    return this.cart.items.find((i) => i.id == cartItemId);
+  }
 
   async getTax() {}
   // get the total of discounted value in a cart
