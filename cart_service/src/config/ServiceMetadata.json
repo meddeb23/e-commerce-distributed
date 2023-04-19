@@ -1,0 +1,54 @@
+{
+  "name": "cart-service",
+  "version": "1.0.0",
+  "endpoints": [
+    {
+      "description": "Get the user's cart",
+      "path": "/",
+      "method": "GET",
+      "auth": {
+        "type": "jwt",
+        "roles": ["user", "admin"]
+      }
+    },
+    {
+      "description": "Remove all items from the user's cart",
+      "path": "/",
+      "method": "DELETE",
+      "auth": {
+        "type": "jwt",
+        "roles": ["user", "admin"]
+      }
+    },
+    {
+      "description": "Remove an item from the user's cart",
+      "path": "/:cartItemId",
+      "method": "DELETE",
+      "params": ["cartItemId"],
+      "auth": {
+        "type": "jwt",
+        "roles": ["user", "admin"]
+      }
+    },
+    {
+      "description": "Add an item to the user's cart",
+      "path": "/:productId",
+      "method": "POST",
+      "params": ["productId"],
+      "auth": {
+        "type": "jwt",
+        "roles": ["user", "admin"]
+      }
+    },
+    {
+      "description": "Update the quantity of an item in the user's cart",
+      "path": "/:cartItemId",
+      "method": "PUT",
+      "params": ["cartItemId"],
+      "auth": {
+        "type": "jwt",
+        "roles": ["user", "admin"]
+      }
+    }
+  ]
+}
