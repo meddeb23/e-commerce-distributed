@@ -18,6 +18,11 @@ export default class CartRepository {
     productId: number,
     quantity: number
   ): Promise<CartItem> {
+    const idx = this.cart.items.findIndex((i) => i.product.id == productId);
+    if (idx !== -1) {
+      this.cart.items[idx].quantity++;
+      return this.cart.items[idx];
+    }
     const newProduct = new Product(1, "Product Name", 10.99, 0);
     const item = new CartItem(
       this.cart.items.length,
