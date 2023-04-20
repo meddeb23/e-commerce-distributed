@@ -48,8 +48,6 @@ const getMatchedEndpoint = (endpoints, path, reqMethod) => {
     // Check if the HTTP method matches and the path parameters count matches
     let pathParams = path.split('/').filter(Boolean);
 
-    if (params) pathParams = [...pathParams, ...params.map(i => `:${i}`)]
-
     if (method === reqMethod && pathParams.length === resource.length) {
 
       // Check if the path parameters match
