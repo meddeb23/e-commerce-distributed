@@ -1,0 +1,73 @@
+{
+  "name": "orders-service",
+  "version": "1.0.0",
+  "endpoints": [
+    {
+      "description": "create a new order",
+      "path": "/",
+      "method": "POST",
+      "auth": {
+        "type": "jwt",
+        "roles": ["user"]
+      }
+    },
+    {
+      "description": "update an existing order",
+      "path": "/:orderId",
+      "method": "PUT",
+      "params": ["orderId"],
+      "auth": {
+        "type": "jwt",
+        "roles": ["user"]
+      }
+    },
+    {
+      "description": "get a specific order",
+      "path": "/:orderId",
+      "method": "GET",
+      "params": ["orderId"],
+      "auth": {
+        "type": "jwt",
+        "roles": ["user"]
+      }
+    },
+    {
+      "description": "get all orders for a specific user",
+      "path": "/",
+      "method": "GET",
+      "auth": {
+        "type": "jwt",
+        "roles": ["user"]
+      }
+    },
+    {
+      "description": "get all orders for all users",
+      "path": "/all",
+      "method": "GET",
+      "auth": {
+        "type": "jwt",
+        "roles": ["admin"]
+      }
+    },
+    {
+      "description": "delete an existing order",
+      "path": "/:orderId",
+      "method": "DELETE",
+      "params": ["orderId"],
+      "auth": {
+        "type": "jwt",
+        "roles": ["user"]
+      }
+    },
+    {
+      "description": "cancel an existing order",
+      "path": "/:orderId/cancel",
+      "method": "PATCH",
+      "params": ["orderId"],
+      "auth": {
+        "type": "jwt",
+        "roles": ["user"]
+      }
+    }
+  ]
+}
