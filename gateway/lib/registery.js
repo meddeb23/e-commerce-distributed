@@ -38,7 +38,7 @@ class Registery {
   ) {
     this.cleanup();
     const key = this.getServiceKey(service_name, service_version);
-    if (!this.services[key]) logger.info(`service registration`, {
+    if (!this.services[key]) logger.info(`service registration: ${service_name}`, {
       service_name,
       service_version,
       service_port,
