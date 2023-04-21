@@ -1,0 +1,73 @@
+{
+  "name": "identity-service",
+  "version": "1.0.0",
+  "endpoints": [
+    {
+      "description": "Get all users",
+      "path": "/users",
+      "method": "GET",
+      "auth": {
+        "type": "jwt",
+        "roles": ["admin"]
+      }
+    },
+    {
+      "description": "Get user by ID",
+      "path": "/users/:id",
+      "method": "GET",
+      "params": ["id"],
+      "auth": {
+        "type": "jwt",
+        "roles": ["admin", "user"]
+      }
+    },
+    {
+      "description": "Create user",
+      "path": "/users",
+      "method": "POST",
+      "auth": {
+        "type": "jwt",
+        "roles": ["admin"]
+      }
+    },
+    {
+      "description": "Update user by ID",
+      "path": "/users/:id",
+      "method": "PUT",
+      "params": ["id"],
+      "auth": {
+        "type": "jwt",
+        "roles": ["admin", "user"]
+      }
+    },
+    {
+      "description": "Delete user by ID",
+      "path": "/users/:id",
+      "method": "DELETE",
+      "params": ["id"],
+      "auth": {
+        "type": "jwt",
+        "roles": ["admin"]
+      }
+    },
+    {
+      "description": "Register a new user",
+      "path": "/register",
+      "method": "POST"
+    },
+    {
+      "description": "Log in a user",
+      "path": "/login",
+      "method": "POST"
+    },
+    {
+      "description": "Verify user token",
+      "path": "/auth/verifyToken",
+      "method": "POST",
+      "auth": {
+        "type": "jwt",
+        "roles": ["admin", "user"]
+      }
+    }
+  ]
+}
