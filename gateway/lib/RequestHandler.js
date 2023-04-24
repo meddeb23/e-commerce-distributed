@@ -77,25 +77,25 @@ export const routingRequest = async (req, res, path, service) => {
       },
       status: 404,
     };
-  // if (endpoint.auth?.type === "jwt") {
-  //   const isAuth = await Authentication.verifyJWT(req.headers.authorization)
-  //   if (!isAuth) {
-  //     req.logger.error(`Unauthorized access: route: ${endpoint}`)
-  //     return {
-  //       data: { message: 'Unauthorized' },
-  //       status: 401
-  //     }
-  //   }
-  //   if (!endpoint.auth.roles.includes(isAuth.user.role)) {
-  //     req.logger.error(`Forbidden access: route: ${endpoint}, userId: ${isAuth.user.id}`)
+  if (endpoint.auth?.type === "jwt") {
+    const isAuth = await Authentication.verifyJWT(req.headers.authorization)
+    if (!isAuth) {
+      req.logger.error(`Unauthorized access: route: ${endpoint}`)
+      return {
+        data: { message: 'Unauthorized' },
+        status: 401
+      }
+    }
+    if (!endpoint.auth.roles.includes(isAuth.user.role)) {
+      req.logger.error(`Forbidden access: route: ${endpoint}, userId: ${isAuth.user.id}`)
 
-  //     return {
-  //       data: { message: 'Forbidden' },
-  //       status: 403
-  //     }
-  //   }
-  //   req.body.user = isAuth.user
-  // }
+      return {
+        data: { message: 'Forbidden' },
+        status: 403
+      }
+    }
+    req.body.user = isAuth.user
+  }
 
   console.log(`http://${service.ip}:${service.port}/${path}`)
   const { data, headers, status } = await callService(
