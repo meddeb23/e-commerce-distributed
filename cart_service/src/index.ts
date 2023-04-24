@@ -45,7 +45,7 @@ app.listen(PORT, () => {
   const register_url = process.env.SERVICE_DISCOVERY_URL;
   const serviceRegister = () =>
     axios
-      .post(`${register_url}`, {
+      .post(`${register_url}/register`, {
         ...EndpointConfig,
         port: PORT,
         url: process.env.HOST,

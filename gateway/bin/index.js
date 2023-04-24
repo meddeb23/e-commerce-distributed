@@ -1,5 +1,5 @@
 import path from "path"
-
+import cors from "cors"
 import dotenv from "dotenv";
 
 dotenv.config({ path: path.resolve("../.env") });
@@ -17,6 +17,9 @@ import logger from "../lib/Logger.js"
 
 const app = express();
 app.use(json());
+app.use(cors({
+  exposedHeaders: "token"
+}))
 app.use(fileUpload());
 app.use(helmet());
 app.use((req, res, next) => {

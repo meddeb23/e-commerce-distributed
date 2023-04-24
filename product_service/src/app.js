@@ -1,5 +1,8 @@
 const express = require("express");
 require("dotenv").config();
+const fs = require('fs')
+const path = require('path')
+const axios = require("axios")
 const app = express();
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
@@ -25,8 +28,32 @@ db.sequelize.sync({ alter: true }).then(() => {
 app.use("/api/produit", products);
 app.use("/api/categories", categories);
 app.use("/api/discounts", discounts);
-const port = process.env.PORT ? process.env.PORT : 3000;
+const PORT = process.env.PORT || 3000;
 
-app.listen(port, () => {
-  console.log("app run on port ", port);
+app.listen(PORT, () => {
+  const EndpointConfig = JSON.parse(
+    fs.readFileSync(
+      path.join(__dirname, "config", "ServiceMetadata.json"),
+      "utf-8"
+    )
+  );
+  const register_url = process.env.SERVICE_DISCOVERY_URL;
+
+  const serviceRegister = () =>
+    axios
+      .post(`${register_url}/register`, {
+        ...EndpointConfig,
+        port: PORT,
+        url: process.env.HOST,
+      })
+      .catch((err) => {
+        console.log("ERROR API registration");
+        // console.log(err.response);
+      });
+
+  serviceRegister();
+  setInterval(() => {
+    serviceRegister();
+  }, 5 * 1000);
+  console.log("app run on port ", PORT);
 });

@@ -37,7 +37,7 @@ export default class UserRepository {
       "",
       hashedPassword,
       "",
-      Roles.User
+      Roles.Admin
     );
 
     this.users.push(user);

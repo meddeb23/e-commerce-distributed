@@ -1,0 +1,36 @@
+version: "3"
+services:
+  gateway:
+    build: ./gateway
+    environment:
+      - IDENTITY_SERVICE=identity_service:5001
+    ports:
+      - "5000:5000"
+  identity_service:
+    build: ./identity_service
+    environment:
+      - PORT=5001
+      - HOST=identity_service
+      - DB_HOST=mysql
+      - SERVICE_DISCOVERY_URL=http://gateway:5000
+  order_service:
+    build: ./order_service
+    environment:
+      - PORT=5001
+      - HOST=order_service
+      - DB_HOST=mysql
+      - SERVICE_DISCOVERY_URL=http://gateway:5000
+  cart_service:
+    build: ./cart_service
+    environment:
+      - PORT=5001
+      - HOST=cart_service
+      - DB_HOST=mysql
+      - SERVICE_DISCOVERY_URL=http://gateway:5000
+  product_service:
+    build: ./product_service
+    environment:
+      - PORT=5001
+      - HOST=product_service
+      - DB_HOST=mysql
+      - SERVICE_DISCOVERY_URL=http://gateway:5000

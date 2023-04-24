@@ -10,6 +10,8 @@ const userRepository = new UserRepository();
 const userCache = new UserCache(userRepository);
 const userService: IUserService = new UserService(userRepository, userCache);
 
+userRepository.createUser("yasmine", "email@example.com", "Password1");
+
 router.get("/users", makeUserController("getUsers", userService));
 router.get("/users/:id", makeUserController("getUser", userService));
 router.post("/users", makeUserController("createUser", userService));
