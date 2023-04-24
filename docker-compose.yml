@@ -13,6 +13,8 @@ services:
       - HOST=identity_service
       - DB_HOST=mysql
       - SERVICE_DISCOVERY_URL=http://gateway:5000
+      - NODE_ENV=development
+
   order_service:
     build: ./order_service
     environment:
@@ -20,6 +22,8 @@ services:
       - HOST=order_service
       - DB_HOST=mysql
       - SERVICE_DISCOVERY_URL=http://gateway:5000
+      - NODE_ENV=development
+
   cart_service:
     build: ./cart_service
     environment:
@@ -27,6 +31,8 @@ services:
       - HOST=cart_service
       - DB_HOST=mysql
       - SERVICE_DISCOVERY_URL=http://gateway:5000
+      - NODE_ENV=development
+
   product_service:
     build: ./product_service
     depends_on:
@@ -36,6 +42,8 @@ services:
       - HOST=product_service
       - DB_HOST=mysql
       - SERVICE_DISCOVERY_URL=http://gateway:5000
+      - NODE_ENV=development
+
   mysql:
     image: mysql
     restart: always
