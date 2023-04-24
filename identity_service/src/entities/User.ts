@@ -30,7 +30,7 @@ export default class User {
     phoneNumber: string,
     password: string,
     address: string,
-    role: Roles,
+    role: Roles = Roles.User,
     createdAt = new Date(),
     updatedAt = new Date()
   ) {

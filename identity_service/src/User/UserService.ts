@@ -26,8 +26,7 @@ class UserService implements IUserService {
   }
 
   async getUsers(req: httpRequest): Promise<httpResponse> {
-    const users = this.userRepository.findAll();
-
+    const users = await this.userRepository.findAll();
     return makeHttpResponse(200, { users });
   }
 

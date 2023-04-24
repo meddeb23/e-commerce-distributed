@@ -3,6 +3,7 @@ import { adaptRequest, httpRequest } from "../helper";
 import UserService, { IUserService } from "./UserService";
 import UserRepository from "./UserRepository";
 import UserCache from "./UserCache";
+import faker from "../scripts/faker";
 
 const router = Router();
 
@@ -10,7 +11,7 @@ const userRepository = new UserRepository();
 const userCache = new UserCache(userRepository);
 const userService: IUserService = new UserService(userRepository, userCache);
 
-userRepository.createUser("yasmine", "email@example.com", "Password1");
+faker(userRepository);
 
 router.get("/users", makeUserController("getUsers", userService));
 router.get("/users/:id", makeUserController("getUser", userService));

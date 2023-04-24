@@ -20,7 +20,11 @@ export default class UserRepository {
   async createUser(
     name: string,
     email: string,
-    password: string
+    password: string,
+    gender: string = "",
+    phoneNumber: string = "",
+    address: string = "",
+    role: Roles = Roles.User
   ): Promise<User> {
     const userExists = await this.findByEmail(email);
     if (userExists) {
@@ -33,11 +37,11 @@ export default class UserRepository {
       id,
       name,
       email,
-      "",
-      "",
+      gender,
+      phoneNumber,
       hashedPassword,
-      "",
-      Roles.Admin
+      address,
+      role
     );
 
     this.users.push(user);
