@@ -14,7 +14,7 @@ const userService: IUserService = new UserService(userRepository, userCache);
 faker(userRepository);
 
 router.get("/users", makeUserController("getUsers", userService));
-router.get("/users/:id", makeUserController("getUser", userService));
+router.get("/users/:userId", makeUserController("getUser", userService));
 router.post("/users", makeUserController("createUser", userService));
 router.put("/users/:id", makeUserController("updateUser", userService));
 router.delete("/users/:id", makeUserController("deleteUser", userService));

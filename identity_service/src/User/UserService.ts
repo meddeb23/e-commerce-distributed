@@ -31,7 +31,7 @@ class UserService implements IUserService {
   }
 
   async getUser(req: httpRequest): Promise<httpResponse> {
-    const userId = parseInt(req.body.userId);
+    const userId = parseInt(req.pathParams.userId);
 
     const { error } = ReqValidation.idSchema.validate(userId);
     if (error) return makeHttpError(400, error.message);
