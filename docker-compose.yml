@@ -29,8 +29,20 @@ services:
       - SERVICE_DISCOVERY_URL=http://gateway:5000
   product_service:
     build: ./product_service
+    depends_on:
+      - mysql
     environment:
       - PORT=5001
       - HOST=product_service
       - DB_HOST=mysql
       - SERVICE_DISCOVERY_URL=http://gateway:5000
+  mysql:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: internship
+    volumes:
+      - ./volumes/mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
