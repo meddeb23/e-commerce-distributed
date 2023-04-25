@@ -2,6 +2,7 @@ import { Request, Response, Router } from "express";
 import { adaptRequest, httpRequest } from "../helper";
 import OrdersService, { IOrdersService } from "./OrdersService";
 import { CartsRepository, OrdersRepository } from "./repositories";
+import faker from "../scripts/faker";
 
 const router = Router();
 
@@ -28,6 +29,8 @@ router.patch(
   "/:orderId/cancel",
   makeRegistrationController("cancelOrder", ordersService)
 );
+
+setTimeout(() => faker(ordersRepository, cartsRepository), 10000);
 
 function makeRegistrationController(
   action: keyof IOrdersService,

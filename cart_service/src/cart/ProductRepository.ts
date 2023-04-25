@@ -30,7 +30,7 @@ export default class ProductRepository {
       product.category.name
     );
 
-    return product;
+    return newProduct;
   }
 
   async getTax() {}

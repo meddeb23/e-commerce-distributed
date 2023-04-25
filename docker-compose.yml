@@ -17,6 +17,8 @@ services:
 
   order_service:
     build: ./order_service
+    depends_on:
+      - cart_service
     environment:
       - PORT=5001
       - HOST=order_service

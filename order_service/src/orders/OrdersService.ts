@@ -89,7 +89,7 @@ class OrdersService implements IOrdersService {
   async getAllOrders(req: httpRequest): Promise<httpResponse> {
     const orders = await this.ordersRepository.getOrders();
 
-    return makeHttpResponse(200, orders);
+    return makeHttpResponse(200, { orders });
   }
 
   async updateOrder(req: httpRequest): Promise<httpResponse> {

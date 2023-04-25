@@ -21,6 +21,7 @@ class CartService implements ICartService {
   async getCart(req: httpRequest): Promise<httpResponse> {
     const { userId } = req.body;
     const cart = await this.cartRepository.getCart(userId);
+    if (!cart) return makeHttpError(404, "cart not found");
     const total = cart.getCartsubTotal();
 
     const res = {
@@ -71,7 +72,10 @@ class CartService implements ICartService {
     if (!cart.hasItem(cartItemId))
       return makeHttpError(404, "Product does not exsit in your cart");
 
-    const deleteItem = await this.cartRepository.removeItemFromCart(cartItemId);
+    const deleteItem = await this.cartRepository.removeItemFromCart(
+      userId,
+      cartItemId
+    );
 
     return makeHttpResponse(200, deleteItem);
   }
@@ -94,6 +98,7 @@ class CartService implements ICartService {
       return makeHttpError(404, "product does not exsit in user cart");
 
     const updatedItem = await this.cartRepository.updatecartItem(
+      userId,
       cartItemId,
       quantity
     );

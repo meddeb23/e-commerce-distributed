@@ -7,7 +7,12 @@ export default class Cart {
   updatedAt: Date;
   items: CartItem[] = [];
 
-  constructor(id: number, userId: number, createdAt: Date, updatedAt: Date) {
+  constructor(
+    id: number,
+    userId: number,
+    createdAt: Date = new Date(),
+    updatedAt: Date = new Date()
+  ) {
     this.id = id;
     this.userId = userId;
     this.createdAt = createdAt;

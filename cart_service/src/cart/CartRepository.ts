@@ -2,16 +2,27 @@ import { Cart, CartItem, Product } from "../entities";
 import ProductRepository from "./ProductRepository";
 
 export default class CartRepository {
-  cart: Cart = new Cart(5, 1, new Date(), new Date());
+  carts: Cart[] = [];
   prodRepo: ProductRepository = new ProductRepository();
-  async createCart(userId: number) {}
+  async createCart(userId: number) {
+    return this.carts.push(new Cart(this.carts.length + 1, userId)) - 1;
+  }
 
   async getCart(userId: number): Promise<Cart> {
-    return this.cart;
+    return this.carts.find((i) => i.userId == userId);
   }
   async emptyCart(userId: number) {
-    this.cart.items = [];
-    return this.cart;
+    const idx = this.carts.findIndex((i) => i.userId == userId);
+    this.carts[idx].items = [];
+    return this.carts[idx];
+  }
+
+  getUserCartIndex(userId: number): number {
+    console.log(
+      this.carts.findIndex((i) => i.userId == userId),
+      userId
+    );
+    return this.carts.findIndex((i) => i.userId == userId);
   }
 
   async addItemToCart(
@@ -19,36 +30,43 @@ export default class CartRepository {
     product: Product,
     quantity: number
   ): Promise<CartItem> {
-    const idx = this.cart.items.findIndex((i) => i.product.id == product.id);
+    let i = this.getUserCartIndex(userId);
+    if (i === -1) i = await this.createCart(userId);
+    const idx = this.carts[i].items.findIndex(
+      (i) => i.product.id == product.id
+    );
     if (idx !== -1) {
-      this.cart.items[idx].quantity++;
-      return this.cart.items[idx];
+      this.carts[i].items[idx].quantity++;
+      return this.carts[i].items[idx];
     }
-    console.log("get the new product");
-    if (!product) return null;
     const item = new CartItem(
-      this.cart.items.length,
-      this.cart.id,
+      this.carts[i].items.length,
+      this.carts[i].id,
       product,
       quantity
     );
-    this.cart.addItem(item);
+    this.carts[i].addItem(item);
     return item;
   }
 
-  async removeItemFromCart(cartItemId: number) {
-    this.cart.removeItem(cartItemId);
-    return this.cart;
+  async removeItemFromCart(userId: number, cartItemId: number) {
+    const i = this.getUserCartIndex(userId);
+
+    this.carts[i].removeItem(cartItemId);
+    return this.carts[i];
   }
 
   async updatecartItem(
+    userId: number,
     cartItemId: number,
     quantity: number
   ): Promise<CartItem> {
-    this.cart.items = this.cart.items.map((i) =>
+    const i = this.getUserCartIndex(userId);
+
+    this.carts[i].items = this.carts[i].items.map((i) =>
       i.id == cartItemId ? { ...i, quantity } : i
     );
-    return this.cart.items.find((i) => i.id == cartItemId);
+    return this.carts[i].items.find((i) => i.id == cartItemId);
   }
 
   async getTax() {}

@@ -2,11 +2,14 @@ import { Request, Response, Router } from "express";
 import { adaptRequest, httpRequest } from "../helper";
 import CartService, { ICartService } from "./CartService";
 import CartRepository from "./CartRepository";
+import faker from "../scripts/faker";
 
 const router = Router();
 
 const cartRepository = new CartRepository();
 const cartService: ICartService = new CartService(cartRepository);
+
+faker(cartRepository);
 
 router.get("/", makeRegistrationController("getCart", cartService));
 
