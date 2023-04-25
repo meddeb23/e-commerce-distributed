@@ -10,14 +10,26 @@ var products = require("./routes/product.route");
 var categories = require("./routes/category.route");
 var discounts = require("./routes/discount.route");
 var db = require("./models");
+const fakerCategory = require("./scripts/fakerCategories");
+const fakerProdut = require("./scripts/fakerProduct");
 app.use(bodyParser.json());
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.path}`)
+  next()
+})
 app.get("/", (req, res) => {
   res.status(200).send("hey api  📚📚📚📚📚 ");
 });
 db.sequelize
   .sync()
-  .then(() => {
+  .then(async () => {
     console.log("Synced db.");
+    console.log("fakerCategory")
+    await fakerCategory()
+    console.log("✅ done")
+    console.log("fakerProduct")
+    await fakerProdut()
+    console.log("✅ done")
   })
   .catch((err) => {
     console.log("Failed to sync db: " + err.message);
@@ -25,7 +37,7 @@ db.sequelize
 db.sequelize.sync({ alter: true }).then(() => {
   console.log("Drop and re-sync db.");
 });
-app.use("/api/produit", products);
+app.use("/api/products", products);
 app.use("/api/categories", categories);
 app.use("/api/discounts", discounts);
 const PORT = process.env.PORT || 3000;
