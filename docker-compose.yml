@@ -49,8 +49,6 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: internship
-    volumes:
-      - ./volumes/mysql_data:/var/lib/mysql
+      MYSQL_DATABASE: ecommerce_produit
     ports:
       - "3306:3306"
