@@ -23,7 +23,7 @@ app.get("/", (req, res) => {
 function connectWithRetry() {
 
   db.sequelize
-    .sync()
+    .sync({ alter: true })
     .then(async () => {
       console.log("Synced db.");
       console.log("fakerCategory")
