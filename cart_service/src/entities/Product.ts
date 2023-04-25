@@ -3,19 +3,19 @@ export default class Product {
   name: string;
   price: number;
   discount: number;
-  categoryId: number;
+  categoryName: string;
 
   constructor(
     id: number,
     name: string,
     price: number,
-    categoryId: number,
+    categoryName: string,
     discount: number = null
   ) {
     this.id = id;
     this.name = name;
     this.price = price;
-    this.categoryId = categoryId;
+    this.categoryName = categoryName;
     this.discount = discount;
   }
 

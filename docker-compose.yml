@@ -35,6 +35,7 @@ services:
 
   product_service:
     build: ./product_service
+    restart: always
     depends_on:
       - mysql
     environment:

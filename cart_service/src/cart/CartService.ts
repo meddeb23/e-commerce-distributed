@@ -41,13 +41,15 @@ class CartService implements ICartService {
 
     if (error) return makeHttpError(400, error.message);
 
-    // TODO: verify product exsists in Database
+    const product = await this.cartRepository.prodRepo.getProduct(productId);
+    if (!product) return makeHttpError(404, "could not fetch product");
 
     const addedItem = await this.cartRepository.addItemToCart(
       userId,
-      productId,
+      product,
       quantity
     );
+    if (!addedItem) return makeHttpError(500, "somthing went wrong");
 
     return makeHttpResponse(200, addedItem);
   }

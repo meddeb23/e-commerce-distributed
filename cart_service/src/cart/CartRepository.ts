@@ -1,8 +1,9 @@
 import { Cart, CartItem, Product } from "../entities";
+import ProductRepository from "./ProductRepository";
 
 export default class CartRepository {
   cart: Cart = new Cart(5, 1, new Date(), new Date());
-
+  prodRepo: ProductRepository = new ProductRepository();
   async createCart(userId: number) {}
 
   async getCart(userId: number): Promise<Cart> {
@@ -15,19 +16,20 @@ export default class CartRepository {
 
   async addItemToCart(
     userId: number,
-    productId: number,
+    product: Product,
     quantity: number
   ): Promise<CartItem> {
-    const idx = this.cart.items.findIndex((i) => i.product.id == productId);
+    const idx = this.cart.items.findIndex((i) => i.product.id == product.id);
     if (idx !== -1) {
       this.cart.items[idx].quantity++;
       return this.cart.items[idx];
     }
-    const newProduct = new Product(1, "Product Name", 10.99, 0);
+    console.log("get the new product");
+    if (!product) return null;
     const item = new CartItem(
       this.cart.items.length,
       this.cart.id,
-      newProduct,
+      product,
       quantity
     );
     this.cart.addItem(item);

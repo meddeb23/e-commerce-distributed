@@ -72,7 +72,7 @@ export default class User {
   }
   static generateToken(user: User, secret: string): string {
     const payload: UserJWTPayload = { id: user.id, email: user.email }; // Generate payload with user data
-    const options = { expiresIn: "1h" }; // Set expiration time for token
+    const options = { expiresIn: "24h" }; // Set expiration time for token
     console.log(secret);
 
     return jwt.sign(payload, secret, options); // Generate JWT token using payload, secret, and options
