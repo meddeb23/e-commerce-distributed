@@ -20,23 +20,30 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
   res.status(200).send("hey api  📚📚📚📚📚 ");
 });
-db.sequelize
-  .sync()
-  .then(async () => {
-    console.log("Synced db.");
-    console.log("fakerCategory")
-    await fakerCategory()
-    console.log("✅ done")
-    console.log("fakerProduct")
-    await fakerProdut()
-    console.log("✅ done")
-  })
-  .catch((err) => {
-    console.log("Failed to sync db: " + err.message);
-  });
-db.sequelize.sync({ alter: true }).then(() => {
-  console.log("Drop and re-sync db.");
-});
+function connectWithRetry() {
+
+  db.sequelize
+    .sync()
+    .then(async () => {
+      console.log("Synced db.");
+      console.log("fakerCategory")
+      await fakerCategory()
+      console.log("✅ done")
+      console.log("fakerProduct")
+      await fakerProdut()
+      console.log("✅ done")
+    })
+    .catch((err) => {
+      console.log("Failed to sync db: " + err.message);
+      setTimeout(connectWithRetry, 5000)
+    });
+  // db.sequelize.sync({ alter: true }).then(() => {
+  //   console.log("Drop and re-sync db.");
+  // });
+
+}
+connectWithRetry()
+
 app.use("/api/products", products);
 app.use("/api/categories", categories);
 app.use("/api/discounts", discounts);
