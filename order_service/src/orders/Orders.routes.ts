@@ -1,16 +1,22 @@
 import { Request, Response, Router } from "express";
 import { adaptRequest, httpRequest } from "../helper";
 import OrdersService, { IOrdersService } from "./OrdersService";
-import { CartsRepository, OrdersRepository } from "./repositories";
+import {
+  CartsRepository,
+  OrdersRepository,
+  UsersRepository,
+} from "./repositories";
 import faker from "../scripts/faker";
 
 const router = Router();
 
 const ordersRepository = new OrdersRepository();
 const cartsRepository = new CartsRepository();
+const usersRepository = new UsersRepository();
 const ordersService: IOrdersService = new OrdersService(
   ordersRepository,
-  cartsRepository
+  cartsRepository,
+  usersRepository
 );
 
 router.post("/", makeRegistrationController("createOrder", ordersService));

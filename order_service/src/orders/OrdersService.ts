@@ -1,6 +1,10 @@
 import { httpResponse, makeHttpError, makeHttpResponse } from "../helper";
 import { httpRequest } from "../helper/adapt-request";
-import { CartsRepository, OrdersRepository } from "./repositories";
+import {
+  CartsRepository,
+  OrdersRepository,
+  UsersRepository,
+} from "./repositories";
 import ReqValidation from "./utilities";
 
 export interface IOrdersService {
@@ -16,13 +20,16 @@ export interface IOrdersService {
 class OrdersService implements IOrdersService {
   ordersRepository: OrdersRepository;
   cartsRepository: CartsRepository;
+  userRepository: UsersRepository;
 
   constructor(
     ordersRepository: OrdersRepository,
-    cartsRepository: CartsRepository
+    cartsRepository: CartsRepository,
+    userRepository: UsersRepository
   ) {
     this.ordersRepository = ordersRepository;
     this.cartsRepository = cartsRepository;
+    this.userRepository = userRepository;
   }
 
   async createOrder(req: httpRequest): Promise<httpResponse> {
@@ -87,8 +94,11 @@ class OrdersService implements IOrdersService {
   }
 
   async getAllOrders(req: httpRequest): Promise<httpResponse> {
-    const orders = await this.ordersRepository.getOrders();
-
+    const orders: any[] = await this.ordersRepository.getOrders();
+    for (let i = 0; i < orders.length; i++) {
+      const user = await this.userRepository.getUser(orders[i].userId);
+      orders[i].userName = user.name;
+    }
     return makeHttpResponse(200, { orders });
   }
 
