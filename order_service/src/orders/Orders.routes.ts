@@ -36,7 +36,7 @@ router.patch(
   makeRegistrationController("cancelOrder", ordersService)
 );
 
-setTimeout(() => faker(ordersRepository, cartsRepository), 10000);
+setTimeout(() => faker(ordersRepository, cartsRepository), 30000);
 
 function makeRegistrationController(
   action: keyof IOrdersService,

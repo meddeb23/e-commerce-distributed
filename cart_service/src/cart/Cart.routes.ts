@@ -9,7 +9,7 @@ const router = Router();
 const cartRepository = new CartRepository();
 const cartService: ICartService = new CartService(cartRepository);
 
-faker(cartRepository);
+setTimeout(() => faker(cartRepository), 30000);
 
 router.get("/", makeRegistrationController("getCart", cartService));
 
